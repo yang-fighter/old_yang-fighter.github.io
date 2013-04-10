@@ -1,7 +1,7 @@
 <html>
 	<head>
 		<link rel="Stylesheet" type="text/css" href="../style.css" />
-		<title>Tips for Debugging Run-time Failures with Intel Fortran </title>
+		<title>Tips for Debugging Run-time Failures with Intel Fortran</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<!-- blog ico -->
 		<link type="image/x-icon" rel="icon" href="../images/alex.ico" />
@@ -22,7 +22,10 @@
 		<center>My personality is who I am, my attitude depends on who you are.</center>
 		<div class="content">
 			
+<p>
+<a href="../index.html">Home</a> - <a href="./fortran.html">Fortran</a> - Tips for Debugging Run-time Failures with Intel Fortran
 <hr />
+</p>
 <h1 id="toc_1" class="justcenter">Tips for Debugging Run-time Failures with Intel Fortran</h1>
 <p>
 @ 2013-04-10 12:25:39
@@ -39,27 +42,27 @@ Your app builds successfully, but crashes at runtime. What Next? Try some useful
 </p>
 
 <p>
-1) Build with /traceback (Windows*) or –traceback (Linux* or Mac OS* X).
+1) Build with <code>/traceback</code> (Windows*) or <code>–traceback</code> (Linux* or Mac OS* X).
 This can give a stack trace with subroutine or function names, source filenames and line numbers at the point of failure, if it is in user code, without the need to build with debug symbols. This is designed as a lightweight option that can also be left enabled for release builds. If an end user encounters a problem, the traceback can be a starting point for a bug report.
 </p>
 
 <p>
-2) Build with /gen-interfaces /warn:interfaces (Windows) or –gen-interfaces –warn interfaces (Linux or Mac OS X). This is able to detect at compile time many instances of argument mismatches between caller and callee, which can otherwise lead to hard-to-debug runtime failures. These options automatically create and check explicit, Fortran90 style interfaces for Fortran77 style or other code that does not already have them. There is no impact on run-time performance.
+2) Build with <code>/gen-interfaces /warn:interfaces</code> (Windows) or <code>–gen-interfaces –warn interfaces</code> (Linux or Mac OS X). This is able to detect at compile time many instances of argument mismatches between caller and callee, which can otherwise lead to hard-to-debug runtime failures. These options automatically create and check explicit, Fortran90 style interfaces for Fortran77 style or other code that does not already have them. There is no impact on run-time performance.
 </p>
 
 <p>
-3) Try building and running with /check (Windows) or –check (Linux and Mac OS X).
+3) Try building and running with <code>/check</code> (Windows) or <code>–check</code> (Linux and Mac OS X).
 This instruments your code and makes a number of valuable run-time checks, including array bounds checking, checking for uninitialized or disassociated pointers, and for some types of uninitialized local scalar variables. Bounds checking in particular is likely to make your program run slower.
 </p>
 
 <p>
-4) Build your program, including the main routine, with /fpe:0 (Windows) or –fpe0 (Linux or Mac OS X). This will cause your program to halt if it encounters a divide-by-zero, overflow or invalid floating-point exception, instead of generating a NaN (not-a-number) and silently continuing. If you have also specified /traceback (-traceback), you should be able to see where the floating point exception occurred. Any impact on performance is likely to be small.
+4) Build your program, including the main routine, with <code>/fpe:0</code> (Windows) or <code>–fpe0</code> (Linux or Mac OS X). This will cause your program to halt if it encounters a divide-by-zero, overflow or invalid floating-point exception, instead of generating a <code>NaN</code> (not-a-number) and silently continuing. If you have also specified /traceback (-traceback), you should be able to see where the floating point exception occurred. Any impact on performance is likely to be small.
 </p>
 
 <p>
-5) If your application fails early on with a segmentation fault, you might be exceeding the default maximum stack size. On Linux or Mac OS X, try setting
-ulimit –s unlimited (bash) or limit stacksize unlimited (C shell)
-On Windows, use the /F build option or increase the stack limits in the IDE under project properties/linker/system/ Stack Commit Size and Stack Reserve Size.
+5) If your application fails early on with <code>a segmentation fault</code>, you might be exceeding the default maximum stack size. On Linux or Mac OS X, try setting
+<code>ulimit –s unlimited</code> (bash) or <code>limit stacksize unlimited</code> (C shell)
+On Windows, use the <code>/F</code> build option or increase the stack limits in the IDE under project properties/linker/system/ Stack Commit Size and Stack Reserve Size.
 </p>
 
 <p>
@@ -97,6 +100,7 @@ Additional information may be found in the main compiler documentation in the se
 
 <p>
 9) OK, sometimes you need to do the heavy lifting. If these suggestions haven’t helped, or if they helped localize the problem but you need more information, it may be time to start interactive debugging. For Windows, see the section Building Applications / Debugging in the main compiler documentation. For Linux or Mac OS X, see the documentation for the Intel® Debugger (idb).
+<hr />
 </p>
 
 		</div>
