@@ -1,0 +1,113 @@
+<html>
+	<head>
+		<link rel="Stylesheet" type="text/css" href="../style.css" />
+		<title>Tips for Debugging Run-time Failures with Intel Fortran</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<!-- blog ico -->
+		<link type="image/x-icon" rel="icon" href="../images/alex.ico" />
+		<link type="image/x-icon" rel="shortcut icon" href="../images/alex.ico" />
+		<!-- for SyntaxHighlighter core -->
+		<script type="text/javascript" src="../scripts/shCore.js"></script>
+		<link type="text/css" rel="stylesheet" href="../styles/shCore.css"/>
+		<!-- for SyntaxHighlighter theme -->
+		<link type="text/css" rel="stylesheet" href="../styles/shThemeMidnight.css"/>
+		<!-- for SyntaxHighlighter syntax -->
+		<script type="text/javascript" src="../scripts/shBrushPython.js"></script>
+		<script type="text/javascript" src="../scripts/shBrushVim.js"></script>
+	</head>
+	<body>
+		<center style="font-family: Cursive; font-size: xx-large; 
+			font-weight: normal; color: #FF6600">Time Line</center><br />
+		<center>Make no mistake between my personality and my attitude.</center>
+		<center>My personality is who I am, my attitude depends on who you are.</center>
+		<div class="content">
+			
+<hr />
+<p>
+<a href="../index.html">Home</a> - <a href="./fortran.html">Fortran</a> - Tips for Debugging Run-time Failures with Intel Fortran
+<hr />
+</p>
+<h1 id="toc_1" class="justcenter">Tips for Debugging Run-time Failures with Intel Fortran</h1>
+<p>
+@ 2013-04-10 12:25:39
+<hr />
+From: <a href="http://software.intel.com/en-us/articles/tips-for-debugging-run-time-failures-in-intel-fortran-applications">http://software.intel.com/en-us/articles/tips-for-debugging-run-time-failures-in-intel-fortran-applications</a>
+</p>
+
+<p>
+Tips for Debugging Run-time Failures in Applications Built with the Intel® Fortran Compiler
+</p>
+
+<p>
+Your app builds successfully, but crashes at runtime. What Next? Try some useful Intel compiler diagnostic options before launching into lengthy debugger sessions.
+</p>
+
+<p>
+1) Build with <code>/traceback</code> (Windows*) or <code>–traceback</code> (Linux* or Mac OS* X).
+This can give a stack trace with subroutine or function names, source filenames and line numbers at the point of failure, if it is in user code, without the need to build with debug symbols. This is designed as a lightweight option that can also be left enabled for release builds. If an end user encounters a problem, the traceback can be a starting point for a bug report.
+</p>
+
+<p>
+2) Build with <code>/gen-interfaces /warn:interfaces</code> (Windows) or <code>–gen-interfaces –warn interfaces</code> (Linux or Mac OS X). This is able to detect at compile time many instances of argument mismatches between caller and callee, which can otherwise lead to hard-to-debug runtime failures. These options automatically create and check explicit, Fortran90 style interfaces for Fortran77 style or other code that does not already have them. There is no impact on run-time performance.
+</p>
+
+<p>
+3) Try building and running with <code>/check</code> (Windows) or <code>–check</code> (Linux and Mac OS X).
+This instruments your code and makes a number of valuable run-time checks, including array bounds checking, checking for uninitialized or disassociated pointers, and for some types of uninitialized local scalar variables. Bounds checking in particular is likely to make your program run slower.
+</p>
+
+<p>
+4) Build your program, including the main routine, with <code>/fpe:0</code> (Windows) or <code>–fpe0</code> (Linux or Mac OS X). This will cause your program to halt if it encounters a divide-by-zero, overflow or invalid floating-point exception, instead of generating a <code>NaN</code> (not-a-number) and silently continuing. If you have also specified /traceback (-traceback), you should be able to see where the floating point exception occurred. Any impact on performance is likely to be small.
+</p>
+
+<p>
+5) If your application fails early on with <code>a segmentation fault</code>, you might be exceeding the default maximum stack size. On Linux or Mac OS X, try setting
+<code>ulimit –s unlimited</code> (bash) or <code>limit stacksize unlimited</code> (C shell)
+On Windows, use the <code>/F</code> build option or increase the stack limits in the IDE under project properties/linker/system/ Stack Commit Size and Stack Reserve Size.
+</p>
+
+<p>
+6) Use the compiler provided interfaces. If you call run-time library functions, build with
+</p>
+<blockquote>
+USE IFLPORT
+</blockquote>
+<p>
+If you call OpenMP run-time library functions, compile with
+</p>
+<blockquote>
+USE OMP_LIB
+</blockquote>
+<p>
+If you call functions from MKL or IMSL*, USE the corresponding module(s).
+</p>
+
+<p>
+7) Look carefully for any error messages in your output log file. Errors from the Fortran run-time library include an error number. Additional information about such RTL errors may be found in the main compiler documentation under “List of Run-Time Error Messages”, or by searching for the error number directly.
+</p>
+
+<p>
+8) If you are building an application using OpenMP*, check out the advice under “Tips for Debugging OpenMP Apps” at /en-us/articles/threading-fortran-applications-for-parallel-performance-on-multi-core-systems  
+</p>
+
+<p>
+All the above options may be used with release (optimized) builds. Certain options are enabled by default in a debug build made through the Microsoft* Visual Studio* IDE on Windows.
+</p>
+
+<p>
+Additional information may be found in the main compiler documentation in the section Building Applications / Error Handling / Handling Run-Time Errors, e.g. “Understanding Run-Time Errors” and the references therein;  also in the article  /en-us/articles/determining-root-cause-of-segmentation-faults-sigsegv-or-sigbus-errors.
+</p>
+
+
+<p>
+9) OK, sometimes you need to do the heavy lifting. If these suggestions haven’t helped, or if they helped localize the problem but you need more information, it may be time to start interactive debugging. For Windows, see the section Building Applications / Debugging in the main compiler documentation. For Linux or Mac OS X, see the documentation for the Intel® Debugger (idb).
+<hr />
+</p>
+
+		</div>
+		<center  style="font-family: Sans-serif; font-size: medium; font-weight: normal; color: #009933">AlexYang&nbsp;&copy;&nbsp;2011-2012
+			<br>
+			Generated by <a href="http://www.vim.org" target="_blank">Vim</a> &amp; <a href="http://code.google.com/p/vimwiki/" target="_blank">Vimwiki</a>
+		</center>
+	</body>
+</html>
